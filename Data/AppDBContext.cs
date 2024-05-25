@@ -39,6 +39,7 @@ namespace GyFChallenge.Data
             modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Product>().ToTable("Users");
 
+
         }
         
     }
