@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore; //Importación Framework de Entity
 using GyFChallenge.Models;
 namespace GyFChallenge.Data
 {
@@ -39,7 +39,7 @@ namespace GyFChallenge.Data
             modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Product>().ToTable("Users");
 
-
+            
         }
         
     }
