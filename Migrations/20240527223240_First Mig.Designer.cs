@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GyFChallenge.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240527193902_First Mig")]
+    [Migration("20240527223240_First Mig")]
     partial class FirstMig
     {
         /// <inheritdoc />
@@ -62,12 +62,7 @@ namespace GyFChallenge.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Surname")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");

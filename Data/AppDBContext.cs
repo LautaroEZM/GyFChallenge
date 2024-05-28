@@ -35,8 +35,7 @@ namespace GyFChallenge.Data
                 tb.Property(col => col.Id).UseIdentityColumn().ValueGeneratedOnAdd();
 
                 tb.Property(col => col.Mail).HasMaxLength(100).IsRequired();
-                tb.Property(col => col.Name).HasMaxLength(50).IsRequired();
-                tb.Property(col => col.Surname).HasMaxLength(50).IsRequired();
+                tb.Property(col => col.Username).HasMaxLength(50).IsRequired();
             });
 
             modelBuilder.Entity<Product>().ToTable("Products");
