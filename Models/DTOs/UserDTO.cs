@@ -1,9 +1,18 @@
-﻿namespace GyFChallenge.Models.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GyFChallenge.Models.DTOs
 {
     public class UserDTO
     {
-        public string Username { get; set; } = string.Empty;
-        public string Mail { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public string Password { get; set; }
     }
 }

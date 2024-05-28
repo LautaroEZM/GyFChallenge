@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GyFChallenge.Controllers // Asegúrate de que este espacio de nombres coincida
 {
-    [Route("api/[controller]")]
+    [Route("")]
     [AllowAnonymous]
     [ApiController]
     public class AccessController : ControllerBase
@@ -31,31 +31,35 @@ namespace GyFChallenge.Controllers // Asegúrate de que este espacio de nombres 
             var userModel = new User
             {
                 Username = element.Username,
-                Mail = element.Mail,
+                Email = element.Email,
                 Password = _utilities.EncriptSHA256(element.Password)
             };
 
-            await _dbContext.Set<User>().AddAsync(userModel);
-            await _dbContext.SaveChangesAsync();
-
-            if (userModel.Id != 0)
-                return StatusCode(StatusCodes.Status200OK, new { isSuccess = true });
-            else
-                return StatusCode(StatusCodes.Status200OK, new { isSuccess = false });
+            try {
+                await _dbContext.Set<User>().AddAsync(userModel);
+                await _dbContext.SaveChangesAsync();
+                return StatusCode(StatusCodes.Status201Created, new { isSuccess = true });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+            }
+                
         }
 
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginDTO objeto)
         {
-            var userFound = await _dbContext.Set<User>()
-                .Where(u => u.Mail == objeto.Mail && u.Password == _utilities.EncriptSHA256(objeto.Password))
+            var user = await _dbContext.Set<User>()
+                .Where(u => u.Email == objeto.Email && u.Password == _utilities.EncriptSHA256(objeto.Password))
                 .FirstOrDefaultAsync();
 
-            if (userFound == null)
-                return StatusCode(StatusCodes.Status200OK, new { isSuccess = false, token = "User not found" });
+
+            if (user == null)
+                return StatusCode(StatusCodes.Status404NotFound, new { message = "User not found" });
             else
-                return StatusCode(StatusCodes.Status200OK, new { isSuccess = true, token = _utilities.generateJWT(userFound) });
+                return StatusCode(StatusCodes.Status200OK, new { token = _utilities.generateJWT(user) });
         }
     }
 }

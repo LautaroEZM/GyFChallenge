@@ -1,29 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace GyFChallenge.Models
+namespace GyFChallenge.Models.DTOs
 {
-    [Index(nameof(Name))]
-    public class Product
+    public class ProductUpdateDTO
     {
-        public int Id { get; set; }
-
         [Length(5, 100)]
-        [Required]
         public string Name { get; set; }
 
-        [Required]
         [Range(0.0, Double.MaxValue, ErrorMessage = "The field {0} must be greater than {1}.")]
         public decimal Price { get; set; }
 
-        public DateOnly CreatedAt { get; set; }
-
-        [Required]
         [AllowedValues("Category1", "Category2")]
         public string Category { get; set; }
 
-        [Required]
         [Range(0, Int32.MaxValue, ErrorMessage = "The field {0} must be greater than {1}.")]
         public int Stock { get; set; }
     }
+
+
 }

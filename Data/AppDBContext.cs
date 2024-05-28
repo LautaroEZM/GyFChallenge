@@ -18,24 +18,13 @@ namespace GyFChallenge.Data
             {
                 tb.HasKey(col => col.Id);
                 tb.Property(col => col.Id).UseIdentityColumn().ValueGeneratedOnAdd();
-
-                // Definir valor mínimo para Value
-                tb.Property(col => col.Value)
-                    .HasColumnType("decimal(18,2)")
-                    .IsRequired()
-                    .HasDefaultValue(0);
-
-                tb.Property(col => col.CreatedAt).IsRequired();
-                tb.Property(col => col.Category).IsRequired();
+                tb.Property(col => col.Price).HasColumnType("decimal(18,2)");
             });
 
             modelBuilder.Entity<User>(tb =>
             {
                 tb.HasKey(col => col.Id);
                 tb.Property(col => col.Id).UseIdentityColumn().ValueGeneratedOnAdd();
-
-                tb.Property(col => col.Mail).HasMaxLength(100).IsRequired();
-                tb.Property(col => col.Username).HasMaxLength(50).IsRequired();
             });
 
             modelBuilder.Entity<Product>().ToTable("Products");

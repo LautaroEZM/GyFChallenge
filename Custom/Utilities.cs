@@ -39,7 +39,7 @@ namespace GyFChallenge.Custom
             var userClaims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, model.Id.ToString()),
-                new Claim(ClaimTypes.Email, model.Mail!),
+                new Claim(ClaimTypes.Email, model.Email!),
                 new Claim(ClaimTypes.Name, model.Username!)
             };
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"]!));
