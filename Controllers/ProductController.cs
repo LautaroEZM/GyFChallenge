@@ -8,7 +8,7 @@ using GyFChallenge.Data;
 namespace GyFChallenge.Controllers
 {
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -22,6 +22,7 @@ namespace GyFChallenge.Controllers
         [Route("")]
         public async Task<IActionResult> List()
         {
+            Console.WriteLine("Getting list of products.");
             var productList = await _appDbContext.Products.ToListAsync();
             return StatusCode(StatusCodes.Status200OK, productList);
         }
@@ -30,6 +31,7 @@ namespace GyFChallenge.Controllers
         [Route("")]
         public async Task<IActionResult> Add([FromBody] ProductDTO data)
         {
+            Console.WriteLine("Add new product.");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -70,6 +72,7 @@ namespace GyFChallenge.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            Console.WriteLine("Delete product.");
             var product = await _appDbContext.Products.FindAsync(id);
             if (product == null)
             {
@@ -86,6 +89,7 @@ namespace GyFChallenge.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateDTO data)
         {
+            Console.WriteLine("Edit product.");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -118,6 +122,7 @@ namespace GyFChallenge.Controllers
         [Route("budget")]
         public async Task<IActionResult> GetFilteredProducts([FromQuery] int budget)
         {
+            Console.WriteLine("Getting list of filtered products.");
             if (budget < 1 || budget > 1000000)
             {
                 return BadRequest(new { message = "The budget must be between 1 and 1,000,000." });

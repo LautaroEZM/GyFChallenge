@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GyFChallenge.Custom;
 using GyFChallenge.Models;
 using GyFChallenge.Models.DTOs;
-using System.Threading.Tasks;
 using GyFChallenge.Data;
 using Microsoft.AspNetCore.Authorization;
 
@@ -28,6 +26,7 @@ namespace GyFChallenge.Controllers // Asegúrate de que este espacio de nombres 
         [Route("register")]
         public async Task<IActionResult> Register(UserDTO element)
         {
+            Console.WriteLine("Register user.");
             var userModel = new User
             {
                 Username = element.Username,
@@ -51,6 +50,7 @@ namespace GyFChallenge.Controllers // Asegúrate de que este espacio de nombres 
         [Route("login")]
         public async Task<IActionResult> Login(LoginDTO objeto)
         {
+            Console.WriteLine("Login user.");
             var user = await _dbContext.Set<User>()
                 .Where(u => u.Email == objeto.Email && u.Password == _utilities.EncriptSHA256(objeto.Password))
                 .FirstOrDefaultAsync();
