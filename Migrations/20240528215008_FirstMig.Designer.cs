@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GyFChallenge.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240528201404_FirstMig")]
+    [Migration("20240528215008_FirstMig")]
     partial class FirstMig
     {
         /// <inheritdoc />
