@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GyFChallenge.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240528155043_FirstMig")]
+    [Migration("20240528201404_FirstMig")]
     partial class FirstMig
     {
         /// <inheritdoc />
@@ -52,7 +52,8 @@ namespace GyFChallenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Products", (string)null);
                 });

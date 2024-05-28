@@ -5,6 +5,7 @@ using GyFChallenge.Models;
 using GyFChallenge.Models.DTOs;
 using GyFChallenge.Data;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace GyFChallenge.Controllers // Asegúrate de que este espacio de nombres coincida
 {
@@ -41,6 +42,7 @@ namespace GyFChallenge.Controllers // Asegúrate de que este espacio de nombres 
             }
             catch (Exception e)
             {
+                Console.WriteLine($"(Register) Error ocurred while creating a user. \r\n{JsonConvert.SerializeObject(new { element })}");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
                 

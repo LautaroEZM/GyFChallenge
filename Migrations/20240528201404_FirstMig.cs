@@ -46,7 +46,8 @@ namespace GyFChallenge.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Name",
                 table: "Products",
-                column: "Name");
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",

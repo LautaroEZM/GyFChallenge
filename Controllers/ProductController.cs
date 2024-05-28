@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using GyFChallenge.Models;
 using GyFChallenge.Models.DTOs;
 using GyFChallenge.Data;
+using System.Xml;
+using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GyFChallenge.Controllers
 {
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -23,6 +26,7 @@ namespace GyFChallenge.Controllers
         public async Task<IActionResult> List()
         {
             Console.WriteLine("Getting list of products.");
+
             var productList = await _appDbContext.Products.ToListAsync();
             return StatusCode(StatusCodes.Status200OK, productList);
         }
@@ -31,7 +35,8 @@ namespace GyFChallenge.Controllers
         [Route("")]
         public async Task<IActionResult> Add([FromBody] ProductDTO data)
         {
-            Console.WriteLine("Add new product.");
+            Console.WriteLine($"(Add) Add new product. \r\n{JsonConvert.SerializeObject(data)}");
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -52,6 +57,7 @@ namespace GyFChallenge.Controllers
             product.Price = data.Price;
             product.Stock  = data.Stock;
             product.Category  = data.Category;
+            product.CreatedAt = DateOnly.FromDateTime(DateTime.Now);
 
             try
             {
@@ -63,6 +69,7 @@ namespace GyFChallenge.Controllers
             }
             catch (Exception e) 
             {
+                Console.WriteLine($"(Add) Error ocurred while creating a product. \r\n{JsonConvert.SerializeObject(new { product })}");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
 
@@ -72,7 +79,7 @@ namespace GyFChallenge.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            Console.WriteLine("Delete product.");
+            Console.WriteLine($"(Delete) Delete product. \r\n{JsonConvert.SerializeObject(new { id })}");
             var product = await _appDbContext.Products.FindAsync(id);
             if (product == null)
             {
@@ -89,7 +96,8 @@ namespace GyFChallenge.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateDTO data)
         {
-            Console.WriteLine("Edit product.");
+            Console.WriteLine($"(Update) Edit product. \r\n{JsonConvert.SerializeObject(data)}");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -113,6 +121,7 @@ namespace GyFChallenge.Controllers
             }
             catch (Exception e)
             {
+                Console.WriteLine($"(Update) Error ocurred while updating a product. \r\n{JsonConvert.SerializeObject(new { product })}");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
@@ -122,7 +131,7 @@ namespace GyFChallenge.Controllers
         [Route("budget")]
         public async Task<IActionResult> GetFilteredProducts([FromQuery] int budget)
         {
-            Console.WriteLine("Getting list of filtered products.");
+            Console.WriteLine($"(Delete) Delete product. \r\n{JsonConvert.SerializeObject(new { budget })}");
             if (budget < 1 || budget > 1000000)
             {
                 return BadRequest(new { message = "The budget must be between 1 and 1,000,000." });
@@ -150,13 +159,9 @@ namespace GyFChallenge.Controllers
             var bestCombination = validCombinations
                 .OrderBy(c => budget - (c.Product1.Price + c.Product2.Price))
                 .FirstOrDefault();
+            var response = new[] { bestCombination.Product1, bestCombination.Product2 };
 
-            return Ok(new
-            {
-                Product1 = bestCombination.Product1,
-                Product2 = bestCombination.Product2,
-                TotalPrice = bestCombination.Product1.Price + bestCombination.Product2.Price
-            });
+            return Ok(response);
         }
 
     }
