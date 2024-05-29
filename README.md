@@ -45,6 +45,35 @@ sh
    dotnet ef database update
 ```
 
+5. Crearse un usuario utilizando el siguiente endpoint:
+```
+http://localhost:5257/register
+```
+
+Ejemplo de los datos:
+```
+{
+    "Username": "Lautaro",
+    "Email": "lautaro.mongelo@gmail.com",
+    "Password": "12345"
+}
+```
+
+6. Obtener un auth token del siguiente endpoint utilizando las mismas credenciales utilizadas al momento de registrarse:
+```
+   http://localhost:5257/login
+```
+
+Ejemplo de los datos:
+```
+{
+    "Email": "lautaro.mongelo@gmail.com",
+    "Password": "12345"
+}
+```
+Todos los requests a la api llevan autenticación tipo Bearer Token. Se deberá utilizar el token obtenido del login y el mismo expira 10 minutos luego de su emisión.
+
+
 ## Estructura del Proyecto
 
 - **GyFChallenge.csproj**: Archivo del proyecto que contiene dependencias y el framework objetivo.
