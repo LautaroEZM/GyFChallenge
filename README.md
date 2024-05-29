@@ -45,32 +45,6 @@ sh
    dotnet ef database update
 ```
 
-5. Crearse un usuario utilizando el siguiente endpoint:
-```
-http://localhost:5257/register
-```
-
-Ejemplo de los datos:
-```
-{
-    "Username": "Lautaro",
-    "Email": "lautaro.mongelo@gmail.com",
-    "Password": "12345"
-}
-```
-
-6. Obtener un auth token del siguiente endpoint utilizando las mismas credenciales utilizadas al momento de registrarse:
-```
-   http://localhost:5257/login
-```
-
-Ejemplo de los datos:
-```
-{
-    "Email": "lautaro.mongelo@gmail.com",
-    "Password": "12345"
-}
-```
 Todos los requests a la api llevan autenticación tipo Bearer Token. Se deberá utilizar el token obtenido del login y el mismo expira 10 minutos luego de su emisión.
 
 
@@ -83,38 +57,7 @@ Todos los requests a la api llevan autenticación tipo Bearer Token. Se deberá 
 - **Pages**: Razor Pages para la interfaz web.
 - **wwwroot**: Archivos estáticos (CSS, JS, etc.).
 
-## Configuración de la Base de Datos
 
-El contexto de la base de datos está definido en `Data/AppDBContext.cs`:
-```csharp
-public class AppDBContext : DbContext
-{
-public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
-
-    public DbSet<Product> Products { get; set; } 
-    public DbSet<User> Users { get; set; } 
- 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) 
-    { 
-        modelBuilder.Entity<Product>(tb => 
-        { 
-            tb.HasKey(col => col.Id); 
-            tb.Property(col => col.Id).UseIdentityColumn().ValueGeneratedOnAdd(); 
-        }); 
- 
-        modelBuilder.Entity<User>(tb => 
-        { 
-            tb.HasKey(col => col.Mail); 
-            tb.Property(col => col.Mail).HasMaxLength(50); 
-            tb.Property(col => col.Name).HasMaxLength(50); 
-            tb.Property(col => col.Surname).HasMaxLength(50); 
-        }); 
- 
-        modelBuilder.Entity<Product>().ToTable("Products"); 
-        modelBuilder.Entity<User>().ToTable("Users"); 
-    } 
-}
-```
 ## Ejecutar la Aplicación
 
 La aplicación bien puede ejecutarse desde el IDE o usando el siguiente comando:
@@ -129,13 +72,29 @@ La aplicación estará disponible en `http://localhost:5257`
 ### Users
 
 - **POST /register**: Crear un nuevo usuario.
+Ejemplo de los datos:
+```
+{
+    "Username": "Lautaro",
+    "Email": "lautaro.mongelo@gmail.com",
+    "Password": "12345"
+}
+```
 - **POST /login**: Loguearse en un usuario existente.
+Ejemplo de los datos:
+```
+{
+    "Email": "lautaro.mongelo@gmail.com",
+    "Password": "12345"
+}
+```
+
 
 ### Products
 
-- **GET /products**: Listar todos los productos.
-- **GET /products/{id}**: Obtener el detalle de un producto por ID.
-- **POST /products**: Crear un nuevo producto.
+- **GET /product**: Listar todos los productos.
+- **GET /product/{id}**: Obtener el detalle de un producto por ID.
+- **POST /product**: Crear un nuevo producto.
 Ejemplo de los datos:
 ```
 {
@@ -146,7 +105,7 @@ Ejemplo de los datos:
 }
 ```
 
-- **PUT /products/{id}**: Actualizar un producto existente.
+- **PUT /product/{id}**: Actualizar un producto existente.
 Ejemplo de los datos:
 ```
 {
@@ -157,5 +116,5 @@ Ejemplo de los datos:
 }
 ```
 
-- **DELETE /products/{id}**: Eliminar un producto por ID.
+- **DELETE /product/{id}**: Eliminar un producto por ID.
 - **GET /product/budget?budget={Presupuesto}**: Devuelve los productos filtrados con las indicaciones del challenge, validando anteriormente que cumplan los requisitos.
