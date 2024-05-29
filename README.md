@@ -40,8 +40,10 @@ cd GyFChallenge
    }
 ```
 4. Aplica las migraciones para crear el esquema de la base de datos: (Sólo si no se utiliza la base de datos enviada por email)
-   sh
+```
+sh
    dotnet ef database update
+```
 
 ## Estructura del Proyecto
 
