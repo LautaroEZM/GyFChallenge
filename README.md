@@ -97,6 +97,11 @@ La aplicación estará disponible en `http://localhost:5257`
 
 ## Endpoints de la API
 
+### Users
+
+- **POST /register**: Crear un nuevo usuario.
+- **POST /login**: Loguearse en un usuario existente.
+
 ### Products
 
 - **GET /api/products**: Listar todos los productos.
