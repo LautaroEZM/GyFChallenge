@@ -90,6 +90,20 @@ namespace GyFChallenge.Controllers
             return StatusCode(StatusCodes.Status200OK, new { message = "Product deleted successfully" });
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            Console.WriteLine($"(Get) Get specific product. \r\n{JsonConvert.SerializeObject(new { id })}");
+            var product = await _appDbContext.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound(new { message = "Product not found" });
+            }
+
+            return StatusCode(StatusCodes.Status200OK, product);
+        }
+
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateDTO data)
