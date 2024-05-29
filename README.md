@@ -21,7 +21,7 @@ La API incluye operaciones CRUD básicas para la gestión de productos y usuario
 ### Instalación
 
 1. Clona el repositorio:
-```sh
+```
 git clone https://github.com/LautaroEZM/GyFChallenge.git
 cd GyFChallenge
 ```
