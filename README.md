@@ -133,8 +133,29 @@ La aplicación estará disponible en `http://localhost:5257`
 
 ### Products
 
-- **GET /api/products**: Listar todos los productos.
-- **GET /api/products/{id}**: Obtener el detalle de un producto por ID.
-- **POST /api/products**: Crear un nuevo producto.
-- **PUT /api/products/{id}**: Actualizar un producto existente.
-- **DELETE /api/products/{id}**: Eliminar un producto por ID.
+- **GET /products**: Listar todos los productos.
+- **GET /products/{id}**: Obtener el detalle de un producto por ID.
+- **POST /products**: Crear un nuevo producto.
+Ejemplo de los datos:
+```
+{
+    "Price": 50,
+    "name": "Auriculares2",
+    "stock": 1,
+    "category": "Category2"
+}
+```
+
+- **PUT /products/{id}**: Actualizar un producto existente.
+Ejemplo de los datos:
+```
+{
+    "Price": 50,
+    "name": "Auriculares2",
+    "stock": 1,
+    "category": "Category2"
+}
+```
+
+- **DELETE /products/{id}**: Eliminar un producto por ID.
+- **GET /product/budget?budget={Presupuesto}**: Devuelve los productos filtrados con las indicaciones del challenge, validando anteriormente que cumplan los requisitos.
