@@ -4,19 +4,17 @@ using Microsoft.AspNetCore.Authorization;
 using GyFChallenge.Models;
 using GyFChallenge.Models.DTOs;
 using GyFChallenge.Data;
-using System.Xml;
 using Newtonsoft.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GyFChallenge.Controllers
 {
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly AppDBContext _appDbContext; 
-        public ProductController(AppDBContext appDbContext) 
+        private readonly AppDBContext _appDbContext;
+        public ProductController(AppDBContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
@@ -36,7 +34,7 @@ namespace GyFChallenge.Controllers
         public async Task<IActionResult> Add([FromBody] ProductDTO data)
         {
             Console.WriteLine($"(Add) Add new product. \r\n{JsonConvert.SerializeObject(data)}");
-            
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -55,8 +53,8 @@ namespace GyFChallenge.Controllers
 
             product.Name = data.Name;
             product.Price = data.Price;
-            product.Stock  = data.Stock;
-            product.Category  = data.Category;
+            product.Stock = data.Stock;
+            product.Category = data.Category;
             product.CreatedAt = DateOnly.FromDateTime(DateTime.Now);
 
             try
@@ -67,7 +65,7 @@ namespace GyFChallenge.Controllers
                 return CreatedAtAction(nameof(List), new { id = product.Id }, product);
 
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 Console.WriteLine($"(Add) Error ocurred while creating a product. \r\n{JsonConvert.SerializeObject(new { product })}");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
@@ -126,27 +124,29 @@ namespace GyFChallenge.Controllers
             }
         }
 
-
         [HttpGet]
         [Route("budget")]
         public async Task<IActionResult> GetFilteredProducts([FromQuery] int budget)
         {
-            Console.WriteLine($"(Delete) Delete product. \r\n{JsonConvert.SerializeObject(new { budget })}");
+            Console.WriteLine($"(Budget) Get products within budget. \r\n{JsonConvert.SerializeObject(new { budget })}");
             if (budget < 1 || budget > 1000000)
             {
                 return BadRequest(new { message = "The budget must be between 1 and 1,000,000." });
             }
 
+            // Obtener los productos con el precio más alto de cada categoría.
             var highestPricedProducts = await _appDbContext.Products
                 .GroupBy(p => p.Category)
                 .Select(g => g.OrderByDescending(p => p.Price).FirstOrDefault())
                 .ToListAsync();
 
+            // Generar combinaciones de productos de diferentes categorías.
             var combinations = from p1 in highestPricedProducts
                                from p2 in highestPricedProducts
                                where p1.Id != p2.Id && p1.Category != p2.Category
                                select new { Product1 = p1, Product2 = p2 };
 
+            // Filtrar las combinaciones que están dentro del presupuesto.
             var validCombinations = combinations
                 .Where(c => c.Product1.Price + c.Product2.Price <= budget)
                 .ToList();
@@ -156,6 +156,7 @@ namespace GyFChallenge.Controllers
                 return NotFound(new { message = "No products were found that meet the conditions." });
             }
 
+            // Seleccionar la mejor combinación que esté más cercana al presupuesto.
             var bestCombination = validCombinations
                 .OrderBy(c => budget - (c.Product1.Price + c.Product2.Price))
                 .FirstOrDefault();
@@ -163,6 +164,5 @@ namespace GyFChallenge.Controllers
 
             return Ok(response);
         }
-
     }
 }
