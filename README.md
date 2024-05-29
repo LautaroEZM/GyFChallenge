@@ -133,9 +133,9 @@ La aplicación estará disponible en `http://localhost:5257`
 
 ### Products
 
-- **GET /products**: Listar todos los productos.
-- **GET /products/{id}**: Obtener el detalle de un producto por ID.
-- **POST /products**: Crear un nuevo producto.
+- **GET /product**: Listar todos los productos.
+- **GET /product/{id}**: Obtener el detalle de un producto por ID.
+- **POST /product**: Crear un nuevo producto.
 Ejemplo de los datos:
 ```
 {
@@ -146,7 +146,7 @@ Ejemplo de los datos:
 }
 ```
 
-- **PUT /products/{id}**: Actualizar un producto existente.
+- **PUT /product/{id}**: Actualizar un producto existente.
 Ejemplo de los datos:
 ```
 {
@@ -157,5 +157,5 @@ Ejemplo de los datos:
 }
 ```
 
-- **DELETE /products/{id}**: Eliminar un producto por ID.
+- **DELETE /product/{id}**: Eliminar un producto por ID.
 - **GET /product/budget?budget={Presupuesto}**: Devuelve los productos filtrados con las indicaciones del challenge, validando anteriormente que cumplan los requisitos.
